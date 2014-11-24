@@ -162,7 +162,16 @@ public class processor : MonoBehaviour {
 	public int L_GetBrightness(ILuaState s)
 	{
 		int index = (int)s.L_CheckNumber(1);
-		float br = Sensors [index-1].GetComponent<ColSensor> ().GetBrightness ();
+		float br = 0f;
+		//Sensors [index - 1].SendMessage ("GetBrightness");
+		ColSensor Col = Sensors [index - 1].GetComponent<ColSensor> ();
+		if (!Col) {
+			br = Sensors [index - 1].GetComponent<CamSensor> ().GetBrightness ();
+
+		} else {
+			br = Col.GetBrightness ();
+
+		}
 		s.PushNumber ((double)br);
 		return 1;
 	}
