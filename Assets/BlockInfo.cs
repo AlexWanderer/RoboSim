@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BlockInfo {
 	public string BlockID = "null";
+	public string BlockName = "null block";
 	public GameObject BlockObj;
 	public BlockType Type;
 	public enum BlockType
@@ -25,4 +26,6 @@ public class BlockInfo {
 		Forcer
 
 	};
+
+
 }

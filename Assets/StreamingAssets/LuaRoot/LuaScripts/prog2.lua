@@ -3,6 +3,7 @@ _maga = 0
 yaya = 0
 tt = 0
 lib.wait(0.1)
+--lib.trace("BR:")
 while true do
 br = lib.getBrightness(2)
 lib.trace("BR:" .. br)

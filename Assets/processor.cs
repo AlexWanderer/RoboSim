@@ -8,21 +8,26 @@ public class processor : MonoBehaviour {
 	public GameObject[] Motors;
 	public GameObject[] Sensors;
 
+
+	public BlockManager manager;
+
 	public Texture2D Scr;
 	private Color drawCol;
 
 	
 	public string scriptPath;
 	public bool isRunning;
-	
-	private ILuaState _lua; // через этот объект будет производится работа с Lua
-	private ThreadStatus _status; // объект для работы с конкретным скриптом
-	private ILuaState _temp_state;
-	private LuaState _state;
 
-	private bool waitFlag = false;
-	private float waitStartTime;
-	private float waitTime;
+	//кишки наружу, ага
+	public ILuaState _lua; // через этот объект будет производится работа с Lua
+	public ThreadStatus _status; // объект для работы с конкретным скриптом
+	public ILuaState _temp_state;
+	public LuaState _state;
+	public LuaState _thread;
+
+	public bool waitFlag = false;
+	public float waitStartTime;
+	public float waitTime;
 
 
 	void Awake () {
@@ -31,7 +36,7 @@ public class processor : MonoBehaviour {
 
 	void Start () {
 		Scr = new Texture2D (128, 128, TextureFormat.RGB24, false);
-		
+		manager = GetComponent<BlockManager> ();
 		LUA_Init();
 		//LUA_LoadAndRun(scriptPath);
 	
@@ -59,15 +64,17 @@ public class processor : MonoBehaviour {
 	private bool LUA_Init() {
 		_lua = LuaAPI.NewState();			
 		_lua.L_OpenLibs();
-		_lua.L_RequireF("io", ProcLibs.OpenIOLib, true);
+		_lua.L_RequireF("io", this.GetComponent<ProcLibs>().OpenIOLib, true);
 		_lua.L_RequireF("graph", this.GetComponent<ProcLibs>().OpenGraphicsLib, true);
-		var _thread = _lua.NewThread();
+		_thread = _lua.NewThread();
+
 		return true;
 	}
 	
 	private bool LUA_LoadAndRun(string path) {
 		_status = _lua.L_LoadFile (path);
 		if(_status == ThreadStatus.LUA_OK) {
+
 			_lua.Resume(null, 0);
 			isRunning = true;
 			return true;
@@ -80,9 +87,11 @@ public class processor : MonoBehaviour {
 	}
 	
 	private bool LUA_Stop() {
-	
-	isRunning = false;
-	return true;
+
+		//	_thread.
+
+		isRunning = false;
+		return true;
 	}
 
 	private void CheckWait()

@@ -3,10 +3,16 @@ using System.Collections;
 using UniLua;
 
 public class ProcLibs : MonoBehaviour {
-	 Texture2D Scr = this.GetComponent<processor>().Scr;
-	
+	Texture2D Scr;
+	processor proc;
+	Color drawCol;
+	BlockManager manager;
+
+
 	void Start() {
-		
+		Scr = this.GetComponent<processor>().Scr;
+		proc = this.GetComponent<processor> ();
+		manager = GetComponent<BlockManager> ();
 	}
 	
 	public int OpenIOLib(ILuaState lua)
@@ -26,6 +32,9 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("getYaw", L_GetYaw),
 			new NameFuncPair("getRoll", L_GetRoll),
 			new NameFuncPair("move", L_Move),
+			new NameFuncPair("motorSpeed", L_MotorSpeed),
+			new NameFuncPair("getCSBr", L_CSBrightness),
+			new NameFuncPair("thruster", L_Thrust),
 		};
 
 		lua.L_NewLib(define);
@@ -59,20 +68,20 @@ public class ProcLibs : MonoBehaviour {
 	private int L_Wait(ILuaState s)
 	{
 
-		waitTime =(float) s.L_CheckNumber (1);
-		waitFlag = true;
-		waitStartTime = Time.time;
+		proc.waitTime =(float) s.L_CheckNumber (1);
+		proc.waitFlag = true;
+		proc.waitStartTime = Time.time;
 
-		_temp_state = null;
-		_temp_state = s;
+		proc._temp_state = null;
+		proc._temp_state = s;
 
 		return s.YieldK (s.GetTop(), 0, null);
 	}
 
 	private int L_Pause(ILuaState s)
 	{
-		_temp_state = null;
-		_temp_state = s;
+		proc._temp_state = null;
+		proc._temp_state = s;
 		return s.YieldK (s.GetTop(), 0, null);
 
 	}
@@ -114,10 +123,10 @@ public class ProcLibs : MonoBehaviour {
 
 	public int L_DrawLine(ILuaState s)
 	{
-	int x0 = s.L_CheckNumber(1);
-	int y0 = s.L_CheckNumber(2);
-	int x1 = s.L_CheckNumber(3);
-	int y1 = s.L_CheckNumber(4);
+		int x0 = (int) s.L_CheckNumber(1);
+		int y0 = (int)s.L_CheckNumber(2);
+		int x1 = (int)s.L_CheckNumber(3);
+		int y1 = (int)s.L_CheckNumber(4);
 	
 	
 	
@@ -138,9 +147,9 @@ public class ProcLibs : MonoBehaviour {
 		int index = (int)s.L_CheckNumber(1);
 		float br = 0f;
 		//Sensors [index - 1].SendMessage ("GetBrightness");
-		ColSensor Col = Sensors [index - 1].GetComponent<ColSensor> ();
+		ColSensor Col = proc.Sensors [index - 1].GetComponent<ColSensor> ();
 		if (!Col) {
-			br = Sensors [index - 1].GetComponent<CamSensor> ().GetBrightness ();
+			br = proc.Sensors [index - 1].GetComponent<CamSensor> ().GetBrightness ();
 
 		} else {
 			br = Col.GetBrightness ();
@@ -163,9 +172,9 @@ public class ProcLibs : MonoBehaviour {
 		var dir = s.L_CheckNumber(2);
 		var speed = s.L_CheckNumber(3);
 
-		JointMotor motor = Motors[(int)index-1].hingeJoint.motor;
+		JointMotor motor = proc.Motors[(int)index-1].hingeJoint.motor;
 		motor.targetVelocity = (float)speed*(float)dir;
-		Motors[(int)index - 1].hingeJoint.motor = motor;
+		proc.Motors[(int)index - 1].hingeJoint.motor = motor;
 
 		return 1; // так надо
 	}
@@ -219,6 +228,50 @@ public class ProcLibs : MonoBehaviour {
 		return 1; 
 	}
 
+	private int L_MotorSpeed(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		var dir = s.L_CheckNumber(2);
+		var speed = s.L_CheckNumber(3);
+		//Debug.Log ("ROWROW");
+		GameObject motor = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Motor);
 
+		if (motor != null) {
+			motor.GetComponent<Motor> ().SetContSpeed ((float)speed * (float)dir);
+		}
+
+
+
+		return 1; // так надо
+	}
+
+	private int L_CSBrightness(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		float br = 0f;
+		//Sensors [index - 1].SendMessage ("GetBrightness");
+		GameObject cs = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.ColorSensor);
+
+		if (cs != null) {
+			br = cs.GetComponent<Color_Sensor>().GetBrightness();
+		}
+		s.PushNumber ((double)br);
+
+		return 1;
+	}
+
+	private int L_Thrust(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		float thrust =(float) s.L_CheckNumber (2);
+
+		GameObject thr = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.Thruster);
+
+		if (thr != null) {
+			thr.GetComponent<Thruster>().Thrust(thrust);
+		}
+
+		return 1;
+	}
 
 }

@@ -2,14 +2,21 @@
 using System.Collections;
 
 public class Block : MonoBehaviour {
+	public string BlockID = "null";
+	public string BlockName = "null block";
+	public GameObject BlockObj;
+	public BlockInfo.BlockType Type;
 
-	// Use this for initialization
 	void Start () {
-	
+		BlockObj = this.gameObject;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void RegisterBlock(GameObject owner)
+	{
+		owner.GetComponent<BlockManager> ().RegisterNew (BlockID, BlockName, Type, this.gameObject);
+
+
 	}
+
+
 }
