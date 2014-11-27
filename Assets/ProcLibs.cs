@@ -34,7 +34,8 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("move", L_Move),
 			new NameFuncPair("motorSpeed", L_MotorSpeed),
 			new NameFuncPair("getCSBr", L_CSBrightness),
-			new NameFuncPair("thruster", L_Thrust),
+			new NameFuncPair("SetThrust", L_SetThrust),
+			new NameFuncPair("ToggleThruster", L_TgThrust),
 		};
 
 		lua.L_NewLib(define);
@@ -127,9 +128,111 @@ public class ProcLibs : MonoBehaviour {
 		int y0 = (int)s.L_CheckNumber(2);
 		int x1 = (int)s.L_CheckNumber(3);
 		int y1 = (int)s.L_CheckNumber(4);
+		
+		//Обработаем частные случаи (вертикальная / горизонтальная линии, диагонали под 45 градусов)
+		//int c = 0;
+		//рисуем вертикальные
+		if(x1==x0) {
+		int d = y1 - y0;
+			if(d>=0) {
+			for(int c = y1;y< y0;c++){
+				Scr.SetPixel (x0, c, drawCol);
+			}
+			} else {
+				for(int c = y0;y< y1;c++){
+					Scr.SetPixel (x0, c, drawCol);
+				}
+			}
+		}
+		Scr.Apply ();
+		return 1;
+		
+		//Рисуем горизонтальные
+		if(y1==y0) {
+		int d = x1 - x0;
+			if(d>0) {
+			for(int c = x1;c< x0;c++){
+				Scr.SetPixel (x0, c, drawCol);
+			}
+			} else {
+				for(int c = x0;c< x1;c++){
+					Scr.SetPixel (c, y0, drawCol);
+				}
+			}
+		}
+		
+		Scr.Apply ();
+		return 1;
+		
+		//Рисуем диагонали
+		//if( (x0 - x1) == (y0 - y1)) 
+		//int del = y0 - y1;
+		//int s = 
+		
+		
+		//
+		
+		
+		
+		//Изменения координат
+        int dx = (x1 > x0) ? (x1 - x0) : (x0 - x1);
+        int dy = (y1 > y0) ? (y1 - y0) : (y0 - y1);
+        //Направление приращения
+        int sx = (x1 >= x0) ? (1) : (-1);
+        int sy = (y1 >= y0) ? (1) : (-1);
+		
+		
+		
+		
+		
+        if (dy < dx)
+        {
+            int d = (dy << 1) - dx;
+            int d1 = dy << 1;
+            int d2 = (dy - dx) << 1;
+            PutPixel(g, clr, x0, y0, 255);
+            int x = x0 + sx;
+            int y = y0;
+            for (int i = 1; i <= dx; i++)
+            {
+                if (d > 0)
+                {
+                    d += d2;
+                    y += sy;
+                }
+                else
+                    d += d1;
+					
+					Scr.SetPixel (x, y, drawCol);
+                    x++;
+                
+            }
+            else
+            {
+                int d = (dx << 1) - dy;
+                int d1 = dx << 1;
+                int d2 = (dx - dy) << 1;
+                PutPixel(g, clr, x0, y0, 255);
+                int x = x0;
+                int y = y0 + sy;
+                for (int i = 1; i <= dy; i++)
+                {
+                    if (d > 0)
+                    {
+                        d += d2;
+                        x += sx;
+                    }
+                    else
+					d += d1;
+					
+                    Scr.SetPixel (x, y, drawCol);
+                    y++;
+					
+                }
+            }
+		}
 	
-	
-	
+	Scr.Apply ();
 	return 1;
 	}
 	
@@ -240,10 +343,10 @@ public class ProcLibs : MonoBehaviour {
 			motor.GetComponent<Motor> ().SetContSpeed ((float)speed * (float)dir);
 		}
 
-
-
-		return 1; // так надо
+		return 1;
 	}
+	
+	
 
 	private int L_CSBrightness(ILuaState s) 
 	{
@@ -260,7 +363,7 @@ public class ProcLibs : MonoBehaviour {
 		return 1;
 	}
 
-	private int L_Thrust(ILuaState s) 
+	private int L_SetThrust(ILuaState s) 
 	{
 		string id = s.L_CheckString(1);
 		float thrust =(float) s.L_CheckNumber (2);
@@ -268,7 +371,21 @@ public class ProcLibs : MonoBehaviour {
 		GameObject thr = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.Thruster);
 
 		if (thr != null) {
-			thr.GetComponent<Thruster>().Thrust(thrust);
+			thr.GetComponent<Thruster>().SetThrust(thrust);
+		}
+
+		return 1;
+	}
+	
+	private int L_TgThrust(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		float thrust =(float) s.L_CheckNumber (2);
+
+		GameObject thr = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.Thruster);
+
+		if (thr != null) {
+			thr.GetComponent<Thruster>().ToggleThruster();
 		}
 
 		return 1;
