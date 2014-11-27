@@ -34,6 +34,7 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("move", L_Move),
 			new NameFuncPair("motorSpeed", L_MotorSpeed),
 			new NameFuncPair("getCSBr", L_CSBrightness),
+			new NameFuncPair("getUSDist", L_USDistance),
 			new NameFuncPair("SetThrust", L_SetThrust),
 			new NameFuncPair("ToggleThruster", L_TgThrust),
 		};
@@ -62,7 +63,7 @@ public class ProcLibs : MonoBehaviour {
 
 	private int L_Trace(ILuaState s)
 	{
-		Debug.Log("Lua trace: " + s.L_CheckString(1)+"Time:"+ Time.time.ToString()); // читаем первый параметр
+		Debug.Log("Lua trace: " + s.L_CheckString(1)); // читаем первый параметр
 		return 1; // так надо
 	}
 
@@ -135,17 +136,18 @@ public class ProcLibs : MonoBehaviour {
 		if(x1==x0) {
 		int d = y1 - y0;
 			if(d>=0) {
-			for(int c = y1;y< y0;c++){
+				for(int c = y1;c< y0;c++){
 				Scr.SetPixel (x0, c, drawCol);
 			}
 			} else {
-				for(int c = y0;y< y1;c++){
+				for(int c = y0;c< y1;c++){
 					Scr.SetPixel (x0, c, drawCol);
 				}
 			}
+			Scr.Apply ();
+			return 1;
 		}
-		Scr.Apply ();
-		return 1;
+
 		
 		//Рисуем горизонтальные
 		if(y1==y0) {
@@ -159,21 +161,19 @@ public class ProcLibs : MonoBehaviour {
 					Scr.SetPixel (c, y0, drawCol);
 				}
 			}
+
+			Scr.Apply ();
+			return 1;
 		}
 		
-		Scr.Apply ();
-		return 1;
+
 		
 		//Рисуем диагонали
 		//if( (x0 - x1) == (y0 - y1)) 
 		//int del = y0 - y1;
 		//int s = 
 		
-		
-		//
-		
-		
-		
+
 		//Изменения координат
         int dx = (x1 > x0) ? (x1 - x0) : (x0 - x1);
         int dy = (y1 > y0) ? (y1 - y0) : (y0 - y1);
@@ -190,29 +190,28 @@ public class ProcLibs : MonoBehaviour {
             int d = (dy << 1) - dx;
             int d1 = dy << 1;
             int d2 = (dy - dx) << 1;
-            PutPixel(g, clr, x0, y0, 255);
+			Scr.SetPixel (x0, y0, drawCol);
             int x = x0 + sx;
             int y = y0;
-            for (int i = 1; i <= dx; i++)
-            {
-                if (d > 0)
-                {
-                    d += d2;
-                    y += sy;
-                }
-                else
-                    d += d1;
+			for (int i = 1; i <= dx; i++) {
+				if (d > 0) {
+					d += d2;
+					y += sy;
+				} else {
+					d += d1;
+				}
 					
-					Scr.SetPixel (x, y, drawCol);
-                    x++;
+				Scr.SetPixel (x, y, drawCol);
+				x++;
+			}
                 
-            }
+        }
             else
             {
                 int d = (dx << 1) - dy;
                 int d1 = dx << 1;
                 int d2 = (dx - dy) << 1;
-                PutPixel(g, clr, x0, y0, 255);
+				Scr.SetPixel (x0, y0, drawCol);
                 int x = x0;
                 int y = y0 + sy;
                 for (int i = 1; i <= dy; i++)
@@ -230,7 +229,7 @@ public class ProcLibs : MonoBehaviour {
 					
                 }
             }
-		}
+
 	
 	Scr.Apply ();
 	return 1;
@@ -238,7 +237,7 @@ public class ProcLibs : MonoBehaviour {
 	
 	public int L_ClearScreen(ILuaState s)
 	{
-	//Scr.SetPixels( Надо дописать, автокомплита нет.
+		//Scr.SetPixels (0, 0, 128, 128, drawCol);
 	Scr.Apply();
 	return 1;
 	}
@@ -363,6 +362,26 @@ public class ProcLibs : MonoBehaviour {
 		return 1;
 	}
 
+	private int L_USDistance(ILuaState s) 
+	{
+		//Debug.Log ("Call");
+		string id = s.L_CheckString(1);
+		float dist = 0f;
+		//Sensors [index - 1].SendMessage ("GetBrightness");
+		GameObject us = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.USSensor);
+
+		if (us != null) {
+			dist = us.GetComponent<USSensor>().Measure();
+			s.PushNumber ((double)dist);
+			return 1;
+		}
+
+		s.PushNumber ((double)dist);
+		return 1;
+	}
+
+
+
 	private int L_SetThrust(ILuaState s) 
 	{
 		string id = s.L_CheckString(1);
@@ -380,7 +399,7 @@ public class ProcLibs : MonoBehaviour {
 	private int L_TgThrust(ILuaState s) 
 	{
 		string id = s.L_CheckString(1);
-		float thrust =(float) s.L_CheckNumber (2);
+		//float thrust =(float) s.L_CheckNumber (2);
 
 		GameObject thr = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.Thruster);
 

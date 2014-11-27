@@ -49,7 +49,7 @@ public class Motor : Block {
 	
 	public float GetDelta() {
 	float delta;
-	delta = mathf.DeltaAngle(wheel.transform.rotation.z,lastAngle);
+		delta = Mathf.DeltaAngle(wheel.transform.rotation.z,lastAngle);
 	lastAngle = wheel.transform.rotation.z;
 	return delta;
 	}
