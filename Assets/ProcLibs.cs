@@ -15,7 +15,7 @@ public class ProcLibs : MonoBehaviour {
 		manager = GetComponent<BlockManager> ();
 	}
 	
-	public int OpenIOLib(ILuaState lua)
+	public int OpenSysLib(ILuaState lua)
 	{
 		var define = new NameFuncPair[] // структура, описывающая все доступные методы (интерфейс Lua -> C#)
 		{
@@ -24,6 +24,17 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("pause", L_Pause),
 			new NameFuncPair("getTime", L_GetTime),
 			new NameFuncPair("getDeltaTime", L_GetDeltaTime),
+		
+		};
+		lua.L_NewLib(define);
+		return 1;
+		
+	}
+	
+	public int OpenIOLib(ILuaState lua)
+	{
+		var define = new NameFuncPair[] // структура, описывающая все доступные методы (интерфейс Lua -> C#)
+		{
 			new NameFuncPair("getBrightness", L_GetBrightness),
 			new NameFuncPair("getXPos", L_GetXPos),
 			new NameFuncPair("getYPos", L_GetYPos),
@@ -53,6 +64,7 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("redraw", L_Redraw), 
 			new NameFuncPair("clrscr", L_ClearScreen),
 			new NameFuncPair("drawLine", L_DrawLine),
+			new NameFuncPair("drawRect", L_DrawRect),
 		};
 
 		lua.L_NewLib(define);
@@ -119,6 +131,27 @@ public class ProcLibs : MonoBehaviour {
 
 	public int L_Redraw(ILuaState s)
 	{
+		Scr.Apply ();
+		return 1;
+	}
+	
+	public int L_DrawRect(ILuaState s) //Получаем левую нижнюю точку прямоугольника и рисуем его
+	{
+		int x = (int) s.L_CheckNumber(1);
+		int y = (int)s.L_CheckNumber(2);
+		int width = (int)s.L_CheckNumber(3);
+		int height = (int)s.L_CheckNumber(4);
+		
+		for(int c = y;c< (y + height);c++){
+				Scr.SetPixel (x, c, drawCol);
+				Scr.SetPixel (x + width, c, drawCol);
+			}
+		
+		for(int c = x; c< (x + width);c++){
+				Scr.SetPixel (c, y, drawCol);
+				Scr.SetPixel (c, y + height, drawCol);
+			}
+
 		Scr.Apply ();
 		return 1;
 	}
@@ -237,7 +270,15 @@ public class ProcLibs : MonoBehaviour {
 	
 	public int L_ClearScreen(ILuaState s)
 	{
-		//Scr.SetPixels (0, 0, 128, 128, drawCol);
+	for (int x = 0; x < 128; x++)
+	{
+		for (int y = 0; y < 128; y++)
+		{
+		Scr.SetPixel (x, y, drawCol);
+		}
+	
+	}
+		
 	Scr.Apply();
 	return 1;
 	}

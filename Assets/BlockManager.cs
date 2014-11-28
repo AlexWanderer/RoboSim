@@ -47,5 +47,15 @@ public class BlockManager : MonoBehaviour {
 		}
 		return null;
 	}
+	
+	public bool RemoveBlock(GameObject block) {
+		foreach(BlockInfo bl in blockList) {
+			if (bl.BlockObj == block) {
+				BlockList.Remove(bl);
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

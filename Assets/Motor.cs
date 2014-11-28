@@ -10,8 +10,8 @@ public class Motor : Block {
 	public MotorMode mode;
 	
 	private float travelAngle;
-	
 	private float lastAngle = 0f;
+	private bool freeSpin;
 	
 	public enum MotorMode
 	{
@@ -52,6 +52,26 @@ public class Motor : Block {
 		delta = Mathf.DeltaAngle(wheel.transform.rotation.z,lastAngle);
 	lastAngle = wheel.transform.rotation.z;
 	return delta;
+	}
+	
+	public void RunForSeconds(float speed, float time) 
+	{
+		mode = MotorMode.TimedRun;
+		
+	
+	}
+	
+	public void RunForRevolutions(float speed, float revs) 
+	{
+		float degrees = revs * 360f;
+		mode = MotorMode.RevRun;
+	
+	}
+	
+	public void SwitchFreeSpin() 
+	{
+		
+	
 	}
 
 }

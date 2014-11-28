@@ -8,7 +8,8 @@ public class processor : MonoBehaviour {
 	public GameObject[] Motors;
 	public GameObject[] Sensors;
 
-
+	public string[] ConsoleOut;
+	
 	public BlockManager manager;
 
 	public Texture2D Scr;
@@ -66,6 +67,7 @@ public class processor : MonoBehaviour {
 		_lua.L_OpenLibs();
 		_lua.L_RequireF("io", this.GetComponent<ProcLibs>().OpenIOLib, true);
 		_lua.L_RequireF("graph", this.GetComponent<ProcLibs>().OpenGraphicsLib, true);
+		_lua.L_RequireF("sys", this.GetComponent<ProcLibs>().OpenSysLib, true);
 		_thread = _lua.NewThread();
 
 		return true;
