@@ -11,7 +11,7 @@ public class Motor : Block {
 	
 	private float travelAngle;
 	private float lastAngle = 0f;
-	private bool freeSpin;
+	private bool freeSpin = true;
 	
 	public enum MotorMode
 	{
@@ -48,10 +48,10 @@ public class Motor : Block {
 	}
 	
 	public float GetDelta() {
-	float delta;
+		float delta;
 		delta = Mathf.DeltaAngle(wheel.transform.rotation.z,lastAngle);
-	lastAngle = wheel.transform.rotation.z;
-	return delta;
+		lastAngle = wheel.transform.rotation.z;
+		return delta;
 	}
 	
 	public void RunForSeconds(float speed, float time) 
@@ -70,7 +70,10 @@ public class Motor : Block {
 	
 	public void SwitchFreeSpin() 
 	{
-		
+		JointMotor motor = wheel.hingeJoint.motor;
+		freeSpin = !freeSpin;
+		motor.freeSpin = freeSpin;
+		wheel.hingeJoint.motor = motor;
 	
 	}
 

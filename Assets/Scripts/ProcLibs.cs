@@ -46,8 +46,13 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("motorSpeed", L_MotorSpeed),
 			new NameFuncPair("getCSBr", L_CSBrightness),
 			new NameFuncPair("getUSDist", L_USDistance),
-			new NameFuncPair("SetThrust", L_SetThrust),
-			new NameFuncPair("ToggleThruster", L_TgThrust),
+			new NameFuncPair("setThrust", L_SetThrust),
+			new NameFuncPair("toggleThruster", L_TgThrust),
+			new NameFuncPair("toggleThruster", L_TgThrust),
+			new NameFuncPair("setLight", L_SetLight),
+			new NameFuncPair("setLightColor", L_SetLightColor),
+			new NameFuncPair("setLightIntensity", L_SetLightIntensity),
+			new NameFuncPair("toggleGrabber", L_ToggleGrabber),
 		};
 
 		lua.L_NewLib(define);
@@ -141,10 +146,14 @@ public class ProcLibs : MonoBehaviour {
 		int y = (int)s.L_CheckNumber(2);
 		int width = (int)s.L_CheckNumber(3);
 		int height = (int)s.L_CheckNumber(4);
-		
-		for(int c = y;c< (y + height);c++){
+		//int fill = (int)s.L_CheckNumber (5);
+
+		for(int c = y;c< (y + height);c++){ //рисуем вертикальные линии
 				Scr.SetPixel (x, c, drawCol);
 				Scr.SetPixel (x + width, c, drawCol);
+			//	if (fill > 0) {
+
+			//}
 			}
 		
 		for(int c = x; c< (x + width);c++){
@@ -385,7 +394,54 @@ public class ProcLibs : MonoBehaviour {
 
 		return 1;
 	}
-	
+
+	private int L_SetLightColor(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		float r = (float) s.L_CheckNumber(2);
+		float g = (float) s.L_CheckNumber(3);
+		float b = (float) s.L_CheckNumber(4);
+		//Debug.Log ("ROWROW");
+		GameObject motor = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Light);
+
+		if (motor != null) {
+			motor.GetComponent<LightBlock> ().SetColor(new Color(r,g,b));
+		}
+
+		return 1;
+	}
+
+	private int L_SetLightIntensity(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		float i = (float) s.L_CheckNumber(2);
+
+		GameObject motor = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Light);
+
+		if (motor != null) {
+			motor.GetComponent<LightBlock> ().SetIntensity(i);
+		}
+
+		return 1;
+	}
+
+	private int L_SetLight(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		float f = (float) s.L_CheckNumber(2);
+
+		GameObject motor = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Light);
+
+		if (motor != null) {
+			if (f < 0.7) {
+				motor.GetComponent<LightBlock> ().SetLight (false);
+			} else {
+				motor.GetComponent<LightBlock> ().SetLight (true);
+			}
+		}
+
+		return 1;
+	}
 	
 
 	private int L_CSBrightness(ILuaState s) 
@@ -421,6 +477,17 @@ public class ProcLibs : MonoBehaviour {
 		return 1;
 	}
 
+	private int L_ToggleGrabber(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		GameObject gr = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.Grabber);
+
+		if (gr != null) {
+			gr.GetComponent<HypnoGrabber>().Grab();
+		}
+
+		return 1;
+	}
 
 
 	private int L_SetThrust(ILuaState s) 
@@ -436,6 +503,8 @@ public class ProcLibs : MonoBehaviour {
 
 		return 1;
 	}
+
+
 	
 	private int L_TgThrust(ILuaState s) 
 	{

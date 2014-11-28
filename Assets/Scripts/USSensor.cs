@@ -23,6 +23,7 @@ public class USSensor : Block {
 				Debug.DrawRay (p1, transform.forward);
 				//Debug.Log ("Dist: " + hit.distance.ToString ());
 				lastResult = hit.distance;
+				lastTime = Time.time;
 				return (float)hit.distance;
 
 			} else {

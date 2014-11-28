@@ -11,7 +11,7 @@ public class Block : MonoBehaviour {
 	public float BlockCrashTol = 10f;
 	public float BlockEnergyDrain = 0.0f;
 	
-	private gameObject master; // ссылка на главный объект
+	private GameObject master; // ссылка на главный объект
 
 	void Start () {
 		BlockObj = this.gameObject;

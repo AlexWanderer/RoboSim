@@ -23,7 +23,8 @@ public class BlockInfo {
 		LaserMatrix,
 		SunBattery,
 		Grabber,
-		Forcer
+		Forcer,
+		Light
 
 	};
 
