@@ -9,9 +9,9 @@ public class Motor : Block {
 	public float maxEnergyDrain;
 	public MotorMode mode;
 	
-	private float travelAngle;
-	private float lastAngle = 0f;
-	private bool freeSpin = true;
+	public float travelAngle;
+	public float lastAngle = 0f;
+	public bool freeSpin = true;
 	
 	public enum MotorMode
 	{

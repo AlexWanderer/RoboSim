@@ -44,7 +44,12 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("getRoll", L_GetRoll),
 			new NameFuncPair("move", L_Move),
 			new NameFuncPair("motorSpeed", L_MotorSpeed),
+			new NameFuncPair("motorTurn", L_MotorTurn),
 			new NameFuncPair("getCSBr", L_CSBrightness),
+			new NameFuncPair("cSColor", L_CSColor),
+			new NameFuncPair("cSR", L_CSR),
+			new NameFuncPair("cSG", L_CSG),
+			new NameFuncPair("cSB", L_CSB),
 			new NameFuncPair("getUSDist", L_USDistance),
 			new NameFuncPair("setThrust", L_SetThrust),
 			new NameFuncPair("toggleThruster", L_TgThrust),
@@ -53,6 +58,8 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("setLightColor", L_SetLightColor),
 			new NameFuncPair("setLightIntensity", L_SetLightIntensity),
 			new NameFuncPair("toggleGrabber", L_ToggleGrabber),
+			new NameFuncPair("paint", L_Paint),
+
 		};
 
 		lua.L_NewLib(define);
@@ -146,7 +153,24 @@ public class ProcLibs : MonoBehaviour {
 		int y = (int)s.L_CheckNumber(2);
 		int width = (int)s.L_CheckNumber(3);
 		int height = (int)s.L_CheckNumber(4);
-		//int fill = (int)s.L_CheckNumber (5);
+		int fill = (int)s.L_CheckNumber (5);
+		//var test = s.L_check
+		//s.sett
+
+		if (fill > 0) { //если нужен залитый
+			//Debug.Log ("Fill!");
+			for (int xc = x; xc <= x+width; xc++)
+			{
+				for (int yc = y; yc <= y + height; yc++)
+				{
+					Scr.SetPixel (xc, yc, drawCol);
+				}
+
+			}
+
+			//return 1;
+		}
+
 
 		for(int c = y;c< (y + height);c++){ //рисуем вертикальные линии
 				Scr.SetPixel (x, c, drawCol);
@@ -156,7 +180,7 @@ public class ProcLibs : MonoBehaviour {
 			//}
 			}
 		
-		for(int c = x; c< (x + width);c++){
+		for(int c = x; c<= (x + width);c++){
 				Scr.SetPixel (c, y, drawCol);
 				Scr.SetPixel (c, y + height, drawCol);
 			}
@@ -178,11 +202,11 @@ public class ProcLibs : MonoBehaviour {
 		if(x1==x0) {
 		int d = y1 - y0;
 			if(d>=0) {
-				for(int c = y1;c< y0;c++){
+				for(int c = y0;c< y1;c++){
 				Scr.SetPixel (x0, c, drawCol);
 			}
 			} else {
-				for(int c = y0;c< y1;c++){
+				for(int c = y1;c< y0;c++){
 					Scr.SetPixel (x0, c, drawCol);
 				}
 			}
@@ -195,11 +219,11 @@ public class ProcLibs : MonoBehaviour {
 		if(y1==y0) {
 		int d = x1 - x0;
 			if(d>0) {
-			for(int c = x1;c< x0;c++){
-				Scr.SetPixel (x0, c, drawCol);
+				for(int c = x0;c< x1;c++){
+					Scr.SetPixel (c, y0, drawCol);
 			}
 			} else {
-				for(int c = x0;c< x1;c++){
+				for(int c = x1;c< x0;c++){
 					Scr.SetPixel (c, y0, drawCol);
 				}
 			}
@@ -209,12 +233,6 @@ public class ProcLibs : MonoBehaviour {
 		}
 		
 
-		
-		//Рисуем диагонали
-		//if( (x0 - x1) == (y0 - y1)) 
-		//int del = y0 - y1;
-		//int s = 
-		
 
 		//Изменения координат
         int dx = (x1 > x0) ? (x1 - x0) : (x0 - x1);
@@ -395,6 +413,22 @@ public class ProcLibs : MonoBehaviour {
 		return 1;
 	}
 
+
+	private int L_MotorTurn(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		var angle = s.L_CheckNumber(2);
+
+		//Debug.Log ("ROWROW");
+		GameObject motor = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Motor);
+
+		if (motor != null) {
+			motor.GetComponent<Motor_Turning> ().SetTurnAngle((float)angle);
+		}
+
+		return 1;
+	}
+
 	private int L_SetLightColor(ILuaState s)
 	{	
 		var ID = s.L_CheckString (1);
@@ -448,7 +482,6 @@ public class ProcLibs : MonoBehaviour {
 	{
 		string id = s.L_CheckString(1);
 		float br = 0f;
-		//Sensors [index - 1].SendMessage ("GetBrightness");
 		GameObject cs = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.ColorSensor);
 
 		if (cs != null) {
@@ -458,6 +491,67 @@ public class ProcLibs : MonoBehaviour {
 
 		return 1;
 	}
+
+
+	private int L_CSColor(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		GameObject cs = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.ColorSensor);
+
+		if (cs != null) {
+			cs.GetComponent<Color_Sensor>().Do();
+		}
+		//Debug.Log ("Render");
+		return 1;
+	}
+
+	private int L_CSR(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		float br = 0f;
+		//Sensors [index - 1].SendMessage ("GetBrightness");
+		GameObject cs = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.ColorSensor);
+
+		if (cs != null) {
+			br = cs.GetComponent<Color_Sensor>().GetR();
+		}
+		s.PushNumber ((float)br);
+		//Debug.Log ("Red");
+		return 1;
+	}
+
+	private int L_CSG(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		float br = 0f;
+		//Sensors [index - 1].SendMessage ("GetBrightness");
+		GameObject cs = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.ColorSensor);
+
+		if (cs != null) {
+			br = cs.GetComponent<Color_Sensor>().GetG();
+		}
+		s.PushNumber ((double)br);
+
+		return 1;
+	}
+
+	private int L_CSB(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		float br = 0f;
+		//Sensors [index - 1].SendMessage ("GetBrightness");
+		GameObject cs = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.ColorSensor);
+
+		if (cs != null) {
+			br = cs.GetComponent<Color_Sensor>().GetB();
+		}
+		s.PushNumber ((double)br);
+
+		return 1;
+	}
+
+
+
 
 	private int L_USDistance(ILuaState s) 
 	{
@@ -488,6 +582,19 @@ public class ProcLibs : MonoBehaviour {
 
 		return 1;
 	}
+
+	private int L_Paint(ILuaState s) 
+	{
+		string id = s.L_CheckString(1);
+		GameObject p = manager.GetBlockByIDAndType (id, BlockInfo.BlockType.Painter);
+
+		if (p != null) {
+			p.GetComponent<Painter>().Paint();
+		}
+
+		return 1;
+	}
+
 
 
 	private int L_SetThrust(ILuaState s) 

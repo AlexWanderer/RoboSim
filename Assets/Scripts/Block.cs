@@ -31,4 +31,10 @@ public class Block : MonoBehaviour {
 	master.GetComponent<BlockManager> ().RegisterNew (BlockID, BlockName, Type, this.gameObject);
 	
 	}
+
+	void OnMouseOver() {
+
+	}
+
+
 }

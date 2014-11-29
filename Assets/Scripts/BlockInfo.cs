@@ -24,7 +24,8 @@ public class BlockInfo {
 		SunBattery,
 		Grabber,
 		Forcer,
-		Light
+		Light,
+		Painter
 
 	};
 

@@ -6,6 +6,8 @@ public class Color_Sensor : Block {
 	public Texture2D gTex;
 	public int size = 16;
 
+	public Texture2D image;
+
 	private RenderTexture RTex;
 	void Start() {
 		gTex = new Texture2D (size, size, TextureFormat.ARGB32, false);
@@ -47,8 +49,52 @@ public class Color_Sensor : Block {
 		return val;
 	}
 
+	public void Do() { // рендерим картинку для дальнейших измерений.
+		image = RTImage (cm.camera);
+	}
+
+	public float GetR() { 
+		int pixelCount = 0;
+		float val=0;
+		for (int i = 0; i < image.height; i++) {
+			for (int j = 0; j < image.width; j++) {
+				pixelCount++;
+				val += image.GetPixel(i,j).r;
+			}
+		}
+		val = val / pixelCount;
+		return val;
+	}
+
+	public float GetG() { 
+		int pixelCount = 0;
+		float val=0;
+		for (int i = 0; i < image.height; i++) {
+			for (int j = 0; j < image.width; j++) {
+				pixelCount++;
+				val += image.GetPixel(i,j).g;
+			}
+		}
+		val = val / pixelCount;
+		//	Debug.Log (val);
+		return val;
+	}
+
+	public float GetB() { 
+		int pixelCount = 0;
+		float val=0;
+		for (int i = 0; i < image.height; i++) {
+			for (int j = 0; j < image.width; j++) {
+				pixelCount++;
+				val += image.GetPixel(i,j).b;
+			}
+		}
+		val = val / pixelCount;
+		return val;
+	}
+
 	void OnGUI() {
-		GUI.DrawTexture (new Rect (200, 0, size, size),gTex);
+		//GUI.DrawTexture (new Rect (200, 0, size, size),gTex);
 
 	}
 
