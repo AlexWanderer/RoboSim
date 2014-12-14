@@ -44,6 +44,8 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("getRoll", L_GetRoll),
 			new NameFuncPair("move", L_Move),
 			new NameFuncPair("motorSpeed", L_MotorSpeed),
+			new NameFuncPair("motorEncoder", L_MotorEnc),
+			new NameFuncPair("motorEncoderReset", L_MotorEncReset),
 			new NameFuncPair("motorTurn", L_MotorTurn),
 			new NameFuncPair("getCSBr", L_CSBrightness),
 			new NameFuncPair("cSColor", L_CSColor),
@@ -59,6 +61,9 @@ public class ProcLibs : MonoBehaviour {
 			new NameFuncPair("setLightIntensity", L_SetLightIntensity),
 			new NameFuncPair("toggleGrabber", L_ToggleGrabber),
 			new NameFuncPair("paint", L_Paint),
+			new NameFuncPair("servoX", L_ServoX),
+			new NameFuncPair("servoY", L_ServoY),
+
 
 		};
 
@@ -342,9 +347,9 @@ public class ProcLibs : MonoBehaviour {
 		var dir = s.L_CheckNumber(2);
 		var speed = s.L_CheckNumber(3);
 
-		JointMotor motor = proc.Motors[(int)index-1].hingeJoint.motor;
+		JointMotor motor = proc.Motors[(int)index-1].GetComponent<HingeJoint>().motor;
 		motor.targetVelocity = (float)speed*(float)dir;
-		proc.Motors[(int)index - 1].hingeJoint.motor = motor;
+		proc.Motors[(int)index - 1].GetComponent<HingeJoint>().motor = motor;
 
 		return 1; // так надо
 	}
@@ -398,6 +403,30 @@ public class ProcLibs : MonoBehaviour {
 		return 1; 
 	}
 
+	private int L_ServoX(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		var ang = s.L_CheckNumber(2);
+		GameObject servo = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Servo);
+		
+		if (servo != null) {
+			servo.GetComponent<Servo> ().SetAz((float)ang);
+		}
+		return 1;
+	}
+
+	private int L_ServoY(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		var ang = s.L_CheckNumber(2);
+		GameObject servo = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Servo);
+		
+		if (servo != null) {
+			servo.GetComponent<Servo> ().SetVert((float)ang);
+		}
+		return 1;
+	}
+	
 	private int L_MotorSpeed(ILuaState s)
 	{	
 		var ID = s.L_CheckString (1);
@@ -413,6 +442,29 @@ public class ProcLibs : MonoBehaviour {
 		return 1;
 	}
 
+	private int L_MotorEnc(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		GameObject motor = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Motor);
+		if (motor != null) {
+			float dist = motor.GetComponent<Motor> ().GetDistance();
+			s.PushNumber ((double)dist);
+		}
+		
+		return 1;
+	}
+
+	private int L_MotorEncReset(ILuaState s)
+	{	
+		var ID = s.L_CheckString (1);
+		GameObject motor = manager.GetBlockByIDAndType (ID, BlockInfo.BlockType.Motor);
+		if (motor != null) {
+			motor.GetComponent<Motor> ().ResetOdometer();
+		
+		}
+		
+		return 1;
+	}
 
 	private int L_MotorTurn(ILuaState s)
 	{	

@@ -7,7 +7,7 @@ using System.IO;
 public class BlockManager : MonoBehaviour {
 
 	public List<BlockInfo> blockList = new List<BlockInfo> ();
-
+	private GameObject selectedBlock;
 
 	// Use this for initialization
 	void Start () {
@@ -56,6 +56,10 @@ public class BlockManager : MonoBehaviour {
 			}
 		}
 		return false;
+	}
+
+	public void SetSelectedBlock(GameObject block) {
+		selectedBlock = block;
 	}
 
 }

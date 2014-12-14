@@ -1,0 +1,125 @@
+fileFormatVersion: 2
+guid: b07b0126ea936f743bb978b5ae8c22b1
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: AilL
+    100002: AilR
+    100004: BeamL
+    100006: BeamR
+    100008: Elevator
+    100010: Fuselage
+    100012: KeelL
+    100014: KeelR
+    100016: //RootNode
+    100018: Stabilizer
+    100020: ThrusterL
+    100022: ThrusterR
+    100024: Wing
+    400000: AilL
+    400002: AilR
+    400004: BeamL
+    400006: BeamR
+    400008: Elevator
+    400010: Fuselage
+    400012: KeelL
+    400014: KeelR
+    400016: //RootNode
+    400018: Stabilizer
+    400020: ThrusterL
+    400022: ThrusterR
+    400024: Wing
+    2300000: AilL
+    2300002: AilR
+    2300004: BeamL
+    2300006: BeamR
+    2300008: Elevator
+    2300010: Fuselage
+    2300012: KeelL
+    2300014: KeelR
+    2300016: Stabilizer
+    2300018: ThrusterL
+    2300020: ThrusterR
+    2300022: Wing
+    3300000: AilL
+    3300002: AilR
+    3300004: BeamL
+    3300006: BeamR
+    3300008: Elevator
+    3300010: Fuselage
+    3300012: KeelL
+    3300014: KeelR
+    3300016: Stabilizer
+    3300018: ThrusterL
+    3300020: ThrusterR
+    3300022: Wing
+    4300000: ThrusterR
+    4300002: ThrusterL
+    4300004: Wing
+    4300006: BeamL
+    4300008: Stabilizer
+    4300010: Fuselage
+    4300012: BeamR
+    4300014: AilL
+    4300016: KeelR
+    4300018: KeelL
+    4300020: AilR
+    4300022: Elevator
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    pivotNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 

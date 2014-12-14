@@ -17,7 +17,7 @@ public class Thruster : Block {
 
 	void FixedUpdate() {
 		if (isOn) {
-			this.rigidbody.AddRelativeForce (force * Vector3.forward);
+			this.GetComponent<Rigidbody>().AddRelativeForce (force * Vector3.forward);
 		}
 	}
 }

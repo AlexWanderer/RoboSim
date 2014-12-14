@@ -12,7 +12,13 @@ public class Motor : Block {
 	public float travelAngle;
 	public float lastAngle = 0f;
 	public bool freeSpin = true;
-	
+
+	public bool dbgLogAngle =
+
+
+
+		false;
+
 	public enum MotorMode
 	{
 		Off,
@@ -22,21 +28,27 @@ public class Motor : Block {
 	}
 	
 	void Start() {
-		JointMotor motor = wheel.hingeJoint.motor;
+		JointMotor motor = wheel.GetComponent<HingeJoint>().motor;
 		motor.force = torque;
-		wheel.hingeJoint.motor = motor;
-		lastAngle = wheel.transform.rotation.z;
+		wheel.GetComponent<HingeJoint>().motor = motor;
+		lastAngle = wheel.transform.rotation.eulerAngles.z;
+
 	}
 	
 	void FixedUpdate() {
 		travelAngle += GetDelta();
+		if (dbgLogAngle) {
+			Debug.Log(travelAngle);
+				}
+		//Debug.Log (wheel.GetComponent<Rigidbody> ().IsSleeping ());
 	}
 
 	public void SetContSpeed(float speed)
 	{
-		JointMotor motor = wheel.hingeJoint.motor;
+		JointMotor motor = wheel.GetComponent<HingeJoint>().motor;
 		motor.targetVelocity = speed;
-		wheel.hingeJoint.motor = motor;
+		wheel.GetComponent<HingeJoint>().motor = motor;
+		wheel.GetComponent<Rigidbody> ().WakeUp ();
 	}
 
 	public void ResetOdometer() {
@@ -49,8 +61,8 @@ public class Motor : Block {
 	
 	public float GetDelta() {
 		float delta;
-		delta = Mathf.DeltaAngle(wheel.transform.rotation.z,lastAngle);
-		lastAngle = wheel.transform.rotation.z;
+		delta = Mathf.DeltaAngle(wheel.transform.rotation.eulerAngles.z,lastAngle);
+		lastAngle = wheel.transform.rotation.eulerAngles.z;
 		return delta;
 	}
 	
@@ -70,11 +82,13 @@ public class Motor : Block {
 	
 	public void SwitchFreeSpin() 
 	{
-		JointMotor motor = wheel.hingeJoint.motor;
+		JointMotor motor = wheel.GetComponent<HingeJoint>().motor;
 		freeSpin = !freeSpin;
 		motor.freeSpin = freeSpin;
-		wheel.hingeJoint.motor = motor;
+		wheel.GetComponent<HingeJoint>().motor = motor;
 	
 	}
+
+
 
 }

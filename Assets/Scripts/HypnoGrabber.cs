@@ -18,7 +18,7 @@ public class HypnoGrabber : Block {
 				//Debug.Log ("Dist: " + hit.distance.ToString ());
 				//joint = new FixedJoint ();
 				joint = gameObject.AddComponent<FixedJoint> ();
-				joint.connectedBody = hit.transform.gameObject.rigidbody;
+				joint.connectedBody = hit.transform.gameObject.GetComponent<Rigidbody>();
 				joint.enableCollision = true;
 			}
 		} else {

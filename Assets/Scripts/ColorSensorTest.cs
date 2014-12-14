@@ -15,7 +15,7 @@ public class ColorSensorTest : MonoBehaviour {
 		if (Input.GetMouseButtonDown (0)) {
 			if (Physics.Raycast (ray, out hit, 100)) {
 
-				Texture2D TextureMap = (Texture2D)hit.transform.renderer.material.mainTexture;
+				Texture2D TextureMap = (Texture2D)hit.transform.GetComponent<Renderer>().material.mainTexture;
 				var pixelUV = hit.textureCoord;
 				pixelUV.x *= TextureMap.width;
 				pixelUV.y *= TextureMap.height;

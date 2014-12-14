@@ -5,8 +5,10 @@
 
 [AddComponentMenu("Camera/Simple Smooth Mouse Look ")]
 public class FreeCamera : MonoBehaviour
-{
+{ 
+	public GameObject guiObjet;
 	public bool Control = true;
+	private GUI_Main gui; 
 
 	Vector2 _mouseAbsolute;
 	Vector2 _smoothMouse;
@@ -23,7 +25,8 @@ public class FreeCamera : MonoBehaviour
 	public GameObject characterBody;
 
 	void Start()
-	{
+	{	
+		gui = guiObjet.GetComponent<GUI_Main> ();
 		// Set target direction to the camera's initial orientation.
 		targetDirection = transform.localRotation.eulerAngles;
 
@@ -38,15 +41,14 @@ public class FreeCamera : MonoBehaviour
 
 	void Update()
 	{ 
-		if (Input.GetKeyDown ("e")) {
-			Control = false;
 
-		}
+		if (gui.mode == GUI_Main.GUIMode.Game) {
+			if (Input.GetMouseButton(1)){
 
-		if (Control) {
 			// Ensure the cursor is always locked when set
-			Screen.lockCursor = lockCursor;
-
+			//Screen.lockCursor = lockCursor;
+			//Cursor.lockState = CursorLockMode.Locked;
+			//Cursor.visible = false;
 			// Allow the script to clamp based on a desired target value.
 			var targetOrientation = Quaternion.Euler (targetDirection);
 			var targetCharacterOrientation = Quaternion.Euler (targetCharacterDirection);
@@ -88,22 +90,25 @@ public class FreeCamera : MonoBehaviour
 			}
 
 
+		}
+			
 			if(Input.GetKey("w")) {
 				transform.Translate(0f,0f,.1f);
 			}
-
+			
 			if(Input.GetKey("s")) {
 				transform.Translate(0f,0f,-.1f);
 			}
-
-
+			
+			
 			if(Input.GetKey("a")) {
 				transform.Translate(-.1f,0f,0f);
 			}
-
+			
 			if(Input.GetKey("d")) {
 				transform.Translate(.1f,0f,0f);
 			}
+
 
 
 		}

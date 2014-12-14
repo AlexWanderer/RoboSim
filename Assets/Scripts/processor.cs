@@ -46,14 +46,14 @@ public class processor : MonoBehaviour {
 
 	void Update () {
 	
-		if (Input.GetKeyDown ("p")) {
-			if (_temp_state.GetTop() > 0) _lua.Resume(null, 0);
-			_lua.Resume(null, 0);
-		}
+		//if (Input.GetKeyDown ("p")) {
+		//	if (_temp_state.GetTop() > 0) _lua.Resume(null, 0);
+		//	_lua.Resume(null, 0);
+		//}
 		
-		if (Input.GetKeyDown ("r")) { //Пусть пока запуск будет по нажатию кнопки
-			LUA_LoadAndRun(scriptPath);
-		}
+		//if (Input.GetKeyDown ("r")) { //Пусть пока запуск будет по нажатию кнопки
+		//	LUA_LoadAndRun(scriptPath);
+		//}
 
 		if (waitFlag) {
 
@@ -73,7 +73,7 @@ public class processor : MonoBehaviour {
 		return true;
 	}
 	
-	private bool LUA_LoadAndRun(string path) {
+	public bool LUA_LoadAndRun(string path) {
 		_status = _lua.L_LoadFile (path);
 		if(_status == ThreadStatus.LUA_OK) {
 
@@ -88,11 +88,33 @@ public class processor : MonoBehaviour {
 		}
 	}
 	
-	private bool LUA_Stop() {
-
+	public bool LUA_Stop() {
+		//_lua.YieldK (_lua.GetTop(), 0, null); //стопим поток
+		LUA_Init ();
 		//	_thread.
 
 		isRunning = false;
+		return true;
+	}
+
+	public bool LUA_Pause() {
+		if (isRunning) // Второй раз паузить уже не будем, хватит.
+		{
+			if (_lua.Status == ThreadStatus.LUA_YIELD) { //итак уже в йелде, чо жопу мучать.
+				waitFlag = false;
+				return true;
+			}
+		_lua.YieldK (_lua.GetTop (), 0, null); //стопим поток
+		isRunning = false;
+		return true;
+		}
+		return false;
+	}
+
+	public bool LUA_Resume() {
+		if (_temp_state.GetTop() > 0) _lua.Resume(null, 0);
+		Debug.Log (_lua.Status);
+		isRunning = true;
 		return true;
 	}
 

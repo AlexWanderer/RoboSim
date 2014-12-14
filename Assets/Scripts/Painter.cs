@@ -17,7 +17,7 @@ public class Painter : Block {
 			Debug.DrawRay (p1, transform.forward);
 
 
-			Texture2D TextureMap = (Texture2D)hit.transform.renderer.material.mainTexture;
+			Texture2D TextureMap = (Texture2D)hit.transform.GetComponent<Renderer>().material.mainTexture;
 
 			var pixelUV = hit.textureCoord;
 			pixelUV.x *= TextureMap.width;

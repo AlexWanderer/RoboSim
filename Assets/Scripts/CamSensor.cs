@@ -36,7 +36,7 @@ public class CamSensor : MonoBehaviour {
 
 		int pixelCount = 0;
 		float val=0;
-		Texture2D img = RTImage (cm.camera);
+		Texture2D img = RTImage (cm.GetComponent<Camera>());
 		for (int i = 0; i < img.height; i++) {
 			for (int j = 0; j < img.width; j++) {
 				pixelCount++;

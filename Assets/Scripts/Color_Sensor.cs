@@ -38,7 +38,7 @@ public class Color_Sensor : Block {
 
 		int pixelCount = 0;
 		float val=0;
-		Texture2D img = RTImage (cm.camera);
+		Texture2D img = RTImage (cm.GetComponent<Camera>());
 		for (int i = 0; i < img.height; i++) {
 			for (int j = 0; j < img.width; j++) {
 				pixelCount++;
@@ -50,7 +50,7 @@ public class Color_Sensor : Block {
 	}
 
 	public void Do() { // рендерим картинку для дальнейших измерений.
-		image = RTImage (cm.camera);
+		image = RTImage (cm.GetComponent<Camera>());
 	}
 
 	public float GetR() { 
@@ -94,7 +94,7 @@ public class Color_Sensor : Block {
 	}
 
 	void OnGUI() {
-		//GUI.DrawTexture (new Rect (200, 0, size, size),gTex);
+		GUI.DrawTexture (new Rect (200, 0, size, size),gTex);
 
 	}
 

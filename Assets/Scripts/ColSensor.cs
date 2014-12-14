@@ -8,7 +8,7 @@ public class ColSensor : MonoBehaviour {
 		//Ray ray = 
 		RaycastHit hit;
 		if (Physics.Raycast(gameObject.transform.position,Vector3.down, out hit)) {
-				Texture2D TextureMap = (Texture2D)hit.transform.renderer.material.mainTexture;
+				Texture2D TextureMap = (Texture2D)hit.transform.GetComponent<Renderer>().material.mainTexture;
 				var pixelUV = hit.textureCoord;
 				pixelUV.x *= TextureMap.width;
 				pixelUV.y *= TextureMap.height;
