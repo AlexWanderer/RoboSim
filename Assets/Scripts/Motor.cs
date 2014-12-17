@@ -13,11 +13,12 @@ public class Motor : Block {
 	public float lastAngle = 0f;
 	public bool freeSpin = true;
 
-	public bool dbgLogAngle =
+	public bool dbgLogAngle = false;
+
+	private float AngleA;
+	private float AngleB;
 
 
-
-		false;
 
 	public enum MotorMode
 	{
@@ -32,7 +33,7 @@ public class Motor : Block {
 		motor.force = torque;
 		wheel.GetComponent<HingeJoint>().motor = motor;
 		lastAngle = wheel.transform.rotation.eulerAngles.z;
-
+		Init ();
 	}
 	
 	void FixedUpdate() {
@@ -41,6 +42,13 @@ public class Motor : Block {
 			Debug.Log(travelAngle);
 				}
 		//Debug.Log (wheel.GetComponent<Rigidbody> ().IsSleeping ());
+		if (mode == MotorMode.RevRun) {
+					if(travelAngle> AngleB) { //Воу, это не работает при отрицательных углах! исправить!
+						//SendUnlockSequenceToProcessor() -  разблокируем процессор, прродолжая выполнение программы
+						mode= MotorMode.Off;
+					}
+				// ТОДО: добавить защиту от полной блокировки программы путем добавления тайм-аута, который принудительно продолжает выполнение программы.
+				}
 	}
 
 	public void SetContSpeed(float speed)
@@ -74,8 +82,10 @@ public class Motor : Block {
 	}
 	
 	public void RunForRevolutions(float speed, float revs) 
-	{
+	{	
+		AngleA = travelAngle;
 		float degrees = revs * 360f;
+		AngleB = AngleA + degrees;
 		mode = MotorMode.RevRun;
 	
 	}

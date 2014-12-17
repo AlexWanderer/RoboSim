@@ -10,7 +10,8 @@ public class Block : MonoBehaviour {
 	public float BlockHealth = 100f;
 	public float BlockCrashTol = 10f;
 	public float BlockEnergyDrain = 0.0f;
-	
+
+	private bool isRoot = false;
 	private GameObject master; // ссылка на главный объект
 	private BlockManager manager;
 
@@ -24,14 +25,38 @@ public class Block : MonoBehaviour {
 	private int infoRectH = 150;
 	private int infoRectW = 250;
 
-	private string IdToEdit;// = BlockID;
-
+	public string IdToEdit;// = BlockID;
+	public string NameToEdit; // Robot Name
 
 	void Start () {
 
+		Init ();
+
+	}
+
+	public void Init() {
 		BlockObj = this.gameObject;
 		IdToEdit = BlockID;
 	}
+
+	void Update () {
+		if (Input.GetMouseButtonDown (1)||Input.GetMouseButtonUp (1)) {
+					if(!mouseOver) {
+					showInfo = false;
+					}
+				}
+	}
+	//Тут будет обработчик скорости столкновений. Если врезались слишком быстро - ломаемся. 
+	void OnCollisionEnter(Collision col) {
+		foreach (ContactPoint contact in col.contacts) {
+			float m = Vector3.Dot(contact.normal,col.relativeVelocity);
+			//Debug.Log ("Wow: " + m);
+		}
+	}
+
+	public void SetRoot() {
+		isRoot = true;
+		}
 
 	public void RegisterBlock(GameObject owner)
 	{
@@ -51,18 +76,23 @@ public class Block : MonoBehaviour {
 
 	void OnMouseOver() {
 		mouseOver = true;
-		Debug.Log ("Mouse Hovering Over " + BlockID + " block");
+		//Debug.Log ("Mouse Hovering Over " + BlockID + " block");
+
 		if (blockCol == null) {
-
 			blockCol = (Color?) gameObject.GetComponent<Renderer> ().material.color;
-
-				}
+		}
 
 		Color col = Color.green;
+		if (isRoot)
+						col = Color.yellow;
+
 		gameObject.GetComponent<Renderer> ().material.color = col;
 
-		if (Input.GetMouseButtonUp(1)) {
-			showInfo = !showInfo;
+		if (Input.GetMouseButtonDown(1)) {
+			showInfo = true;
+			if(isRoot) {
+				NameToEdit = GetComponent<RootBlock>().name;
+			}
 			if (showInfo) {
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
@@ -85,7 +115,7 @@ public class Block : MonoBehaviour {
 		mouseOver = false;
 	}
 
-	void OnGUI() 
+	public void OnGUI() 
 	{
 
 			if (mouseOver) {
@@ -103,13 +133,24 @@ public class Block : MonoBehaviour {
 		}
 	}
 
-	void ShowInfoRect(int windowID) 
+	public void ShowInfoRect(int windowID) 
 	{
 		IdToEdit = GUI.TextField (new Rect (10, 30, 100, 20), IdToEdit, 16);
 		if (GUI.Button (new Rect (150, 30, 40, 20), "Set")) 
 		{
 			ChangeID(IdToEdit);
 		}
+		if (isRoot) {
+						NameToEdit = GUI.TextField (new Rect (10, 60, 100, 20), NameToEdit, 16);
+						if (GUI.Button (new Rect (150, 60, 40, 20), "Set")) {
+								ChangeID (NameToEdit);
+								GetComponent<RootBlock>().SetName(NameToEdit);
+						}
+
+						if (GUI.Button (new Rect (220, 30, 25, 25), "V")) {
+							Global.ReturnSelf().BroadcastMessage("UISetRobot",this.gameObject);
+						}
+				}
 	}
 
 

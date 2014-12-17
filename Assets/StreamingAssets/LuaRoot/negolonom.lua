@@ -42,8 +42,8 @@ angle=-35
 end
 lib.motorSpeed("M3",1,-300)
 lib.motorSpeed("M4",1,300)
-lib.motorTurn("M1", -angle)
-lib.motorTurn("M2", -angle)
+lib.motorTurn("M1", angle)
+lib.motorTurn("M2", angle)
 lib.motorTurn("M3", 0)
 lib.motorTurn("M4", 0)
 lib.motorSpeed("M1",1,200 )

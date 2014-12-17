@@ -5,7 +5,7 @@ public class LightBlock : Block {
 	public Light light;
 	// Use this for initialization
 	void Start () {
-		
+		Init ();
 	}
 	
 	public void SetColor(Color col) {

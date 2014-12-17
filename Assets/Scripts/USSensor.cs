@@ -9,7 +9,7 @@ public class USSensor : Block {
 	private float lastResult;
 
 	void Start () {
-	
+		Init ();
 	}
 	
 	public float Measure()

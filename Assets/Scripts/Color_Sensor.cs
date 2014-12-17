@@ -10,6 +10,7 @@ public class Color_Sensor : Block {
 
 	private RenderTexture RTex;
 	void Start() {
+		Init ();
 		gTex = new Texture2D (size, size, TextureFormat.ARGB32, false);
 		RTex = new RenderTexture (size, size,32,RenderTextureFormat.ARGB32);
 	}
@@ -94,6 +95,7 @@ public class Color_Sensor : Block {
 	}
 
 	void OnGUI() {
+		base.OnGUI ();
 		GUI.DrawTexture (new Rect (200, 0, size, size),gTex);
 
 	}

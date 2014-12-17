@@ -6,6 +6,7 @@ public class HypnoGrabber : Block {
 	Vector3 p1;
 	// Use this for initialization
 	void Start () {
+		Init ();
 		p1 = transform.position + transform.forward * 0.3f;
 	}
 

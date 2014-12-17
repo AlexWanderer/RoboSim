@@ -26,9 +26,9 @@ public class GUI_Main : MonoBehaviour {
 	public GameObject selectedRobot;
 
 	void Start() {
-		proc = main.GetComponent<processor> ();
-		selectedRobot = main;
-		runStr.image.enabled = true;
+		//proc = main.GetComponent<processor> ();
+		//selectedRobot = main;
+		//runStr.image.enabled = true;
 	}
 
 
@@ -41,7 +41,7 @@ public class GUI_Main : MonoBehaviour {
 
 
 	
-	// Update is called once per frame
+
 	void Update () {
 		if (mode == GUIMode.Game) { //обрабатываем нажатия клавиш в игровом режиме
 			if (Input.GetKey ("tab")) {
@@ -73,18 +73,28 @@ public class GUI_Main : MonoBehaviour {
 		
 	}
 
+	public void UISetRobot(GameObject m) {
+		main = m;
+		proc = main.GetComponent<processor> ();
+		selectedRobot = main;
+		}
+
 	public void LoadLuaScript(string path) {
 		if (proc) {
-			if(proc.isRunning) {
-				proc.LUA_Stop();
-			}
-			if(proc.LUA_LoadAndRun(path) == false) {
-				runStr.image.color = Color.red;
-			} else {
-				runStr.image.color = Color.white;
-			}
+						if (proc.isRunning) {
+								proc.LUA_Stop ();
+						}
+						if (proc.LUA_LoadAndRun (path) == false) {
+								runStr.image.color = Color.red;
+								//return false;
+						} else {
+								runStr.image.color = Color.white;
+								//return true;
+						}
 
-		}
+				}// else
+						//return false;
+
 	}
 
 	public void LoadLuaScript() {
@@ -94,22 +104,34 @@ public class GUI_Main : MonoBehaviour {
 				
 			}
 			proc.LUA_LoadAndRun(runStr.text);
-
+			//return true;
 		}
+		//return false;
 	}
 
 	public void PauseToggle() {
-			if (pauseMode.isOn) 
-			{
-				proc.LUA_Pause ();
-			} else {
-			proc.LUA_Resume();
-			}
-
+		if (proc) {
+						if (pauseMode.isOn) {
+								proc.LUA_Pause ();
+						} else {
+								proc.LUA_Resume ();
+						}
+				}
 		}
 
 	public void GraphOutToggle() {
 		showGraphicOutput = !showGraphicOutput;
 	}
+
+	public void ToggleGamePause() 
+	{
+		if (Global.GetPauseState ()) 
+		{Global.SetPause (false);
+				} else {
+			Global.SetPause(true);}
+
+
+	}
+
 
 }

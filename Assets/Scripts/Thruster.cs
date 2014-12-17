@@ -5,6 +5,10 @@ public class Thruster : Block {
 	public bool isOn;
 	public float force;
 
+	void Start() {
+		Init ();
+	}
+
 	public void SetThrust(float f) {
 		//isOn = true;
 		force = f;

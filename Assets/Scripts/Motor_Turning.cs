@@ -5,6 +5,7 @@ public class Motor_Turning : Motor {
 	public GameObject axle;
 	// Use this for initialization
 	void Start() {
+		Init ();
 		JointMotor motor = wheel.GetComponent<HingeJoint>().motor;
 		motor.force = torque;
 		wheel.GetComponent<HingeJoint>().motor = motor;

@@ -8,7 +8,7 @@ while true do
 a = a + 0.1
 angle = math.sin(a)
 angle = angle * 25
-sys.trace(angle)
+--sys.trace(angle)
 lib.motorSpeed("M3",1,-300)
 lib.motorSpeed("M4",1,300)
 lib.motorTurn("M1", angle)
