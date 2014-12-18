@@ -10,6 +10,9 @@ public class Motor_Turning : Motor {
 		motor.force = torque;
 		wheel.GetComponent<HingeJoint>().motor = motor;
 		lastAngle = wheel.transform.rotation.z;
+		if (editorFlag) {
+			wheel.GetComponent<Rigidbody> ().isKinematic = true;
+		}
 	}
 	
 	

@@ -30,6 +30,9 @@ public class Block : MonoBehaviour {
 	
 	public int UID;
 
+	[System.NonSerialized]
+	public bool editorFlag = true;
+
 	void Start () {
 
 		Init ();
@@ -43,7 +46,7 @@ public class Block : MonoBehaviour {
 	}
 
 	void GenerateUID() {
-		UID = Mathf.Random.Range(10000,999999999);
+		UID = Random.Range(10000000,999999999);
 	}
 	void Update () {
 		if (Input.GetMouseButtonDown (1)||Input.GetMouseButtonUp (1)) {
@@ -74,10 +77,11 @@ public class Block : MonoBehaviour {
 	public void ChangeID(string newID)
 	{
 		//manager = master.GetComponent<BlockManager> ();
-		manager.RemoveBlock (this.gameObject); //ссылка на игровой объект однозначно определяет блок, больше ничего не нужно.
-		BlockID = newID;
-		manager.RegisterNew (BlockID, BlockName, Type, this.gameObject);
-	
+		if (manager) {
+						manager.RemoveBlock (this.gameObject); //ссылка на игровой объект однозначно определяет блок, больше ничего не нужно.
+						BlockID = newID;
+						manager.RegisterNew (BlockID, BlockName, Type, this.gameObject);
+				}
 	}
 
 	void OnMouseOver() {
@@ -126,7 +130,7 @@ public class Block : MonoBehaviour {
 
 			if (mouseOver) {
 				GUI.Label (new Rect (Input.mousePosition.x + 20,Screen.height - Input.mousePosition.y, 150, 30), "Block ID: " + BlockID);
-				if(BlockObj != null) {
+				if((BlockObj != null)&&(manager)) {
 					manager.SetSelectedBlock(BlockObj);
 				}
 			}

@@ -33,21 +33,27 @@ public class Motor : Block {
 		motor.force = torque;
 		wheel.GetComponent<HingeJoint>().motor = motor;
 		lastAngle = wheel.transform.rotation.eulerAngles.z;
+		if (editorFlag) {
+						wheel.GetComponent<Rigidbody> ().isKinematic = true;
+				}
 		Init ();
 	}
 	
 	void FixedUpdate() {
-		travelAngle += GetDelta();
-		if (dbgLogAngle) {
-			Debug.Log(travelAngle);
-				}
-		//Debug.Log (wheel.GetComponent<Rigidbody> ().IsSleeping ());
-		if (mode == MotorMode.RevRun) {
-					if(travelAngle> AngleB) { //Воу, это не работает при отрицательных углах! исправить!
-						//SendUnlockSequenceToProcessor() -  разблокируем процессор, прродолжая выполнение программы
-						mode= MotorMode.Off;
-					}
-				// ТОДО: добавить защиту от полной блокировки программы путем добавления тайм-аута, который принудительно продолжает выполнение программы.
+		if (!editorFlag) {
+						travelAngle += GetDelta ();
+						if (dbgLogAngle) {
+								Debug.Log (travelAngle);
+						}
+						//Debug.Log (wheel.GetComponent<Rigidbody> ().IsSleeping ());
+						if (mode == MotorMode.RevRun) {
+								if (travelAngle > AngleB) { //Воу, это не работает при отрицательных углах! исправить!
+										//SendUnlockSequenceToProcessor() -  разблокируем процессор, прродолжая выполнение программы
+										mode = MotorMode.Off;
+								}
+								// ТОДО: добавить защиту от полной блокировки программы путем добавления тайм-аута, который принудительно продолжает выполнение программы.
+						}
+
 				}
 	}
 
