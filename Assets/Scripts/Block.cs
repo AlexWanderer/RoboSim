@@ -27,6 +27,8 @@ public class Block : MonoBehaviour {
 
 	public string IdToEdit;// = BlockID;
 	public string NameToEdit; // Robot Name
+	
+	public int UID;
 
 	void Start () {
 
@@ -37,8 +39,12 @@ public class Block : MonoBehaviour {
 	public void Init() {
 		BlockObj = this.gameObject;
 		IdToEdit = BlockID;
+		GenerateUID();
 	}
 
+	void GenerateUID() {
+		UID = Mathf.Random.Range(10000,999999999);
+	}
 	void Update () {
 		if (Input.GetMouseButtonDown (1)||Input.GetMouseButtonUp (1)) {
 					if(!mouseOver) {
