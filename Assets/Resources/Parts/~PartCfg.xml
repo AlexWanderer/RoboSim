@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Part name="Robot main Hull" uName="HULL1" usePrefab="0" prefab="" model="hull_mdl" scalable="1" nonUniformScaling ="1" scale="1,1,1" mass="10" maxScale="2,2,2" minScale="0.5,0.5,0.5" >
+<Part name="Robot main Hull" uName="HULL1" usePrefab="0" prefab="" model="hull_mdl" scalable="1" scale="1,1,1" mass="10" maxScale="2,2,2" minScale="0.5,0.5,0.5">
 <Modules>
          <Block defID="HULL" name="Main robot hull" type="main" rootable="1" health="100" crashTol="10" fuelType="electricity" fuelDrain="0.0"/>
          <Processor program="helloWorld.lua" maxOps="9000" hasIMU="1"/>
@@ -7,5 +7,4 @@
 </Modules>
 
 </Part>
-
 

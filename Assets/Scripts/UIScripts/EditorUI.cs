@@ -33,9 +33,37 @@ public class EditorUI : MonoBehaviour {
 				{
 					SelectedBlock.transform.position = hit.point;
 					SelectedBlock.transform.rotation = Quaternion.LookRotation (hit.normal) * Quaternion.Euler (90, 0, 0);
-					if(Input.GetMouseButtonDown(0)) {
+					if(Input.GetButtonDown("w") {
+						SelectedBlock.transform.rotation  *= Quaternion.Euler(New Vector3(90,0,0));
+					}
+					
+					if(Input.GetButtonDown("s") {
+						SelectedBlock.transform.rotation  *= Quaternion.Euler(New Vector3(-90,0,0));
+					}
+					
+					if(Input.GetButtonDown("a") {
+						SelectedBlock.transform.rotation  *= Quaternion.Euler(New Vector3(0,0,90));
+					}
+					
+					if(Input.GetButtonDown("d") {
+						SelectedBlock.transform.rotation  *= Quaternion.Euler(New Vector3(0,0,-90));
+					}
+					
+					if(Input.GetButtonDown("q") {
+						SelectedBlock.transform.rotation  *= Quaternion.Euler(New Vector3(0,90,0));
+					}
+					
+					if(Input.GetButtonDown("e") {
+						SelectedBlock.transform.rotation  *= Quaternion.Euler(New Vector3(0,-90,0));
+					}
+					if(Input.GetMouseButtonDown(0)&&(hit.gameObject.GetComponent<Block>())) { //Тут поменял, не уверен, что будет работать на всем
 						hasActivePart = false;
 						SelectedBlock = null;
+						SelectedBlock.GetComponent<Collider>().enabled = true;
+						//SelectedBlock.GetComponent<Rigidbody>()
+						var  joint = SelectedBlock.AddComponent<FixedJoint>(); //Связываем объекты (проверить, можно ли их двигать после этого). Связывание нужно для того, чтобы записать в сохранение наличие связи между объектами
+						joint.connectedBody = hit.rigidbody;
+						
 					}
 				}
 			}
