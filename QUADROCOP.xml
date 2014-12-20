@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Robot Name="QUADROCOP" File="sin.lua" Description="First robot save">
+  <Part uID="58129564" isRoot="True" uName="Hull_1" procID="HULL" pos="0,0,0" rot="-0.7071068,0,0,0.7071067" />
+  <Part uID="652396578" isRoot="False" uName="Light_1" procID="LT1" pos="0.2673547,-0.08480239,0.8049997" rot="0,1,-8.940697E-08,0" />
+  <Part uID="368679944" isRoot="False" uName="Light_1" procID="LT1" pos="-0.2526557,-0.08560252,0.8049997" rot="0,1,-8.940697E-08,0" />
+  <Part uID="267991317" isRoot="False" uName="Light_1" procID="LT1" pos="0.1981121,-0.3997664,0.5219395" rot="-0.7071068,0,0,0.7071067" />
+  <Part uID="974181542" isRoot="False" uName="Light_1" procID="LT1" pos="-0.177347,-0.3997664,0.5160585" rot="-0.7071068,0,0,0.7071067" />
+  <Part uID="648911764" isRoot="False" uName="Light_1" procID="LT1" pos="0.2002853,-0.3997667,-0.4945072" rot="-0.7071068,0,0,0.7071067" />
+  <Part uID="761689591" isRoot="False" uName="Light_1" procID="LT1" pos="-0.1906749,-0.3997667,-0.4854746" rot="-0.7071068,0,0,0.7071067" />
+  <Part uID="372351892" isRoot="False" uName="Thruster_1" procID="THR1" pos="0.4025,0.03639174,0.6382093" rot="0.5,0.5,0.5,-0.5" />
+  <Part uID="742775954" isRoot="False" uName="Thruster_1" procID="THR1" pos="0.4025,0.001245975,-0.5454764" rot="0.5,0.5,0.5,-0.5" />
+  <Part uID="388183634" isRoot="False" uName="Thruster_1" procID="THR1" pos="-0.4024999,0.02221799,0.656582" rot="0.5,-0.5,-0.5,-0.5" />
+  <Part uID="445984532" isRoot="False" uName="Thruster_1" procID="THR1" pos="-0.4025,0.01281404,-0.6306545" rot="0.5,-0.5,-0.5,-0.5" />
+  <Part uID="893105658" isRoot="False" uName="Motor_Turning_1" procID="MT1" pos="0.1873642,-0.3997667,0.01540111" rot="-0.5000001,0.5,-0.5000001,0.5" />
+  <Constraint id1="652396578" id2="58129564" collision="False" />
+  <Constraint id1="368679944" id2="58129564" collision="False" />
+  <Constraint id1="267991317" id2="58129564" collision="False" />
+  <Constraint id1="974181542" id2="58129564" collision="False" />
+  <Constraint id1="648911764" id2="58129564" collision="False" />
+  <Constraint id1="761689591" id2="58129564" collision="False" />
+  <Constraint id1="372351892" id2="58129564" collision="False" />
+  <Constraint id1="742775954" id2="58129564" collision="False" />
+  <Constraint id1="388183634" id2="58129564" collision="False" />
+  <Constraint id1="445984532" id2="58129564" collision="False" />
+  <Constraint id1="893105658" id2="58129564" collision="False" />
+</Robot>

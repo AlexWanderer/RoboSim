@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Robot Name="test" File="sin.lua" Description="First robot save">
+  <Part uID="173213699" isRoot="True" uName="Hull_1" procID="HULL" pos="0,0,0" rot="-0.7071068,0,0,0.7071067" />
+  <Part uID="982410717" isRoot="False" uName="Motor_Turning_1" procID="MT1" pos="-0.4024999,0.1005597,-0.5226469" rot="0,-0.7071068,0,0.7071068" />
+  <Part uID="238284173" isRoot="False" uName="Thruster_1" procID="THR1" pos="0.462037,0.2577724,-0.2229877" rot="-0.698006,-0.1130827,0.1130828,0.698006" />
+  <Constraint id1="982410717" id2="173213699" collision="False" />
+  <Constraint id1="238284173" id2="173213699" collision="False" />
+</Robot>

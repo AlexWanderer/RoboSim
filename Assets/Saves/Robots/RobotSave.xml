@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Robot Name = "ROBOMOBO" File ="crash.lua" Description ="Our very first robot">
+<Robot Name ="ROBOMOBO" File ="crash.lua" Description ="Our very first robot">
        <Part uID="123456789" isRoot="1" uName="HULL1" procID="HULL" pos="0,0,0" rot="0,0,0,0" scaleFactor="1,1,1" mass="5.4">
           <Processor maxOps ="9000"/>
           <Resources Electricity ="800"/>

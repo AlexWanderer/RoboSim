@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Robot Name="ROBOMOBO" File="sin.lua" Description="First robot save">
+  <Part uID="158356670" isRoot="True" uName="Hull_1" procID="HULL" pos="0,0,0" rot="-0.7071068,0,0,0.7071067" />
+  <Part uID="408362698" isRoot="False" uName="Thruster_1" procID="THR1" pos="-0.001552004,-0.3997667,-0.5890465" rot="0,1,-8.940697E-08,0" />
+  <Part uID="649851426" isRoot="False" uName="Motor_1" procID="M1" pos="-0.2782934,0.07842767,0.7549182" rot="0,8.940697E-08,1,0" />
+  <Part uID="882360175" isRoot="False" uName="Motor_1" procID="M1" pos="0.2941937,0.07842767,0.7628455" rot="-8.940697E-08,0,0,1" />
+  <Part uID="247029559" isRoot="False" uName="Motor_Turning_1" procID="MT1" pos="0.2621297,0.07842743,-0.2993064" rot="-8.940697E-08,0,0,1" />
+  <Constraint id1="408362698" id2="158356670" collision="False" />
+  <Constraint id1="649851426" id2="158356670" collision="False" />
+  <Constraint id1="882360175" id2="158356670" collision="False" />
+  <Constraint id1="247029559" id2="158356670" collision="False" />
+</Robot>

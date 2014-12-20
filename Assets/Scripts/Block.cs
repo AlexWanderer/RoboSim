@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class Block : MonoBehaviour {
+	public string uName = "HULL_1";
 	public string BlockID = "null";
 	public string BlockName = "null block";
 	public GameObject BlockObj;
