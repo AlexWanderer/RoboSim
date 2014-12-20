@@ -31,7 +31,7 @@ public class Block : MonoBehaviour {
 	public int UID;
 
 	[System.NonSerialized]
-	public bool editorFlag = true;
+	public bool editorFlag = false;
 
 	void Start () {
 
@@ -67,6 +67,14 @@ public class Block : MonoBehaviour {
 		isRoot = true;
 		}
 
+	public void SetRoot(bool flag) {
+		isRoot = flag;
+	}
+
+	public bool GetRoot() {
+		return isRoot;
+	}
+
 	public void RegisterBlock(GameObject owner)
 	{
 		master = owner;
@@ -100,7 +108,7 @@ public class Block : MonoBehaviour {
 
 		if (Input.GetMouseButtonDown(1)) {
 			showInfo = true;
-			if(isRoot) {
+			if((isRoot)&&(GetComponent<RootBlock>())) {
 				NameToEdit = GetComponent<RootBlock>().name;
 			}
 			if (showInfo) {

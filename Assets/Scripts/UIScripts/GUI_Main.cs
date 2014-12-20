@@ -77,6 +77,7 @@ public class GUI_Main : MonoBehaviour {
 		main = m;
 		proc = main.GetComponent<processor> ();
 		selectedRobot = main;
+		Global.SelectedRobot = m;
 		}
 
 	public void LoadLuaScript(string path) {

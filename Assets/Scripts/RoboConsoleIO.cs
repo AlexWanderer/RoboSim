@@ -7,14 +7,14 @@ public class RoboConsoleIO : MonoBehaviour
 	public List<string> output = new List<string> ();
 	public string input;
 	public GameObject thisRobot;
-	public Processor proc;
-	public ProcIOhandler IOHandler;
+	public processor proc;
+	//public ProcIOhandler IOHandler;
 	
 	
 	void Start() 
 	{
 		thisRobot = gameObject;
-		proc = thisRobot.GetComponent<Processor>();
+		proc = thisRobot.GetComponent<processor>();
 		//IOHandler = thisRobot.GetComponent<ProcIOhandler>();
 	}
 	
@@ -34,7 +34,7 @@ public class RoboConsoleIO : MonoBehaviour
 	
 	public string GetSpecificString(int index) 
 	{
-	 return output.Element(index);
+		return output [index];
 	}
 	
 

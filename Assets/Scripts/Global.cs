@@ -6,6 +6,7 @@ public class Global : MonoBehaviour {
 	public static bool isPaused = false;
 	public static List<GameObject> robotsList = new List<GameObject> ();
 	public static GameObject self;
+	public static GameObject SelectedRobot;
 
 	void Start() {
 		self = this.gameObject;
